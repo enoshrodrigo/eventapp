@@ -17,7 +17,7 @@ export default function HomeScreen() {
     // Add more events here
   ];
 
-  const renderEventItem = ({ item, index }) => {
+  const renderEventItem = ({ item, index }: { item: any, index: number }) => {
     const inputRange = [
       (index - 1) * viewportWidth * 0.8,
       index * viewportWidth * 0.8,
