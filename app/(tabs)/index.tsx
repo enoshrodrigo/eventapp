@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, ScrollView, FlatList, Image, Text, View, TextInput, Dimensions, Animated } from 'react-native';
+import EventCard from '../components/EventCard';
+import RecommendationCard from '../components/RecommendationCard'; // Import the new component
 
 const { width: viewportWidth } = Dimensions.get('window');
 
-export default function HomeScreen() {
+function HomeScreen() {
   const [scrollX] = useState(new Animated.Value(0));
 
   const featuredEvents = [
@@ -14,7 +16,74 @@ export default function HomeScreen() {
     // Add more events here
   ];
 
-  const renderEventItem = ({ item, index }) => {
+  const eventsForYou = [
+    {
+      id: '1',
+      title: 'Electric Love Festival',
+      date: '2024-09-25',
+      image: 'https://www.electriclove.at/en/wp-content/uploads/sites/2/2023/04/Electric-Love-Festival-2023-1-scaled.jpg',
+      description: 'Intents Festival is one of the largest and most advanced dance festivals in the Netherlands...',
+    },
+    {
+      id: '2',
+      title: 'Intents Festival',
+      date: '2024-09-25',
+      image: 'https://i1.sndcdn.com/artworks-UqSwVWjGt0LORK5C-eauH8w-t500x500.jpg',
+      description: 'Intents Festival is one of the largest and most advanced dance festivals in the Netherlands...',
+    },
+    {
+      id: '3',
+      title: 'Tomorrowland',
+      date: '2024-09-25',
+      image: 'https://prismic-assets-cdn.tomorrowland.com/ZjDuAN3JpQ5PTRRp_PORTRAIT-3-.png',
+      description: 'Intents Festival is one of the largest and most advanced dance festivals in the Netherlands...',
+    },
+    {
+      id: '4',
+      title: 'Ultra Music Festival',
+      date: '2024-09-25',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgHsEntVrcHIB2HogseC7k9Xz0llegOPgqsQ&s',
+      description: 'Intents Festival is one of the largest and most advanced dance festivals in the Netherlands...',
+    },
+    
+
+    // Add more events here
+  ];
+
+  const recommendedEvents = [
+   
+    {
+      id: '1',
+      title: 'Electric Love Festival',
+      location: 'Salzburg, Austria',
+      price: '$150',
+      image: 'https://www.electriclove.at/en/wp-content/uploads/sites/2/2023/04/Electric-Love-Festival-2023-1-scaled.jpg',
+    },
+    {
+      id: '2',
+      title: 'Intents Festival',
+      location: 'Oisterwijk, Netherlands',
+      price: '$200',
+      image: 'https://i1.sndcdn.com/artworks-UqSwVWjGt0LORK5C-eauH8w-t500x500.jpg',
+    },
+    {
+      id: '3',
+      title: 'Tomorrowland',
+      location: 'Boom, Belgium',
+      price: '$250',
+      image: 'https://prismic-assets-cdn.tomorrowland.com/ZjDuAN3JpQ5PTRRp_PORTRAIT-3-.png',
+    },
+    {
+      id: '4',
+      title: 'Ultra Music Festival',
+      location: 'Miami, USA',
+      price: '$300',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgHsEntVrcHIB2HogseC7k9Xz0llegOPgqsQ&s',
+    },
+    // Add more events here
+  ];
+
+  const renderEventItem = ({ item }) => {
     return (
       <View style={styles.eventCard}>
         <Image source={{ uri: item.image }} style={styles.eventImage} />
@@ -47,12 +116,24 @@ export default function HomeScreen() {
         snapToInterval={viewportWidth * 0.8}
         decelerationRate="fast"
       />
-
+ <Text style={styles.sectionTitle}>RECOMMENDED FOR YOU</Text>
+      <View>
+        {recommendedEvents.map(event => (
+          <RecommendationCard key={event.id} event={event} />
+        ))}
+      </View>
       <Text style={styles.sectionTitle}>FOR YOU</Text>
-      <View style={styles.promoCard}>
+     {/*  <View style={styles.promoCard}>
         <Text style={styles.promoText}>Claim 1 free ticket!</Text>
         <Text style={styles.promoSubText}>Share an event with friends and get 1 ticket.</Text>
+      </View> */}
+      <View style={styles.eventsGrid}>
+        {eventsForYou.map(event => (
+          <EventCard key={event.id} event={event} />
+        ))}
       </View>
+
+     
     </ScrollView>
   );
 }
@@ -152,4 +233,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
   },
+  eventsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
 });
+
+export default HomeScreen;
