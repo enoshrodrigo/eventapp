@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, ScrollView, FlatList, Image, Text, View, TextInput, TouchableOpacity, Dimensions, Animated } from 'react-native';
+import { StyleSheet, ScrollView, FlatList, Image, Text, View, TextInput, Dimensions, Animated } from 'react-native';
 
 const { width: viewportWidth } = Dimensions.get('window');
 
@@ -8,36 +8,21 @@ export default function HomeScreen() {
 
   const featuredEvents = [
     { id: '1', title: 'The Weekend', date: 'Dec 21', image: 'https://static.vecteezy.com/system/resources/previews/029/332/148/non_2x/ai-generative-dj-playing-and-mixing-music-in-nightclub-party-at-night-edm-dance-music-club-with-crowd-of-young-people-free-photo.jpg' },
-    { id: '2', title: 'Fire Show', date: 'Dec 23', image: 'https://5.imimg.com/data5/FJ/RQ/MY-8385427/dj-party.jpg' },
-    { id: '3', title: 'Fire Show', date: 'Dec 23', image: 'https://5.imimg.com/data5/FJ/RQ/MY-8385427/dj-party.jpg' },
-    { id: '4', title: 'Fire Show', date: 'Dec 23', image: 'https://5.imimg.com/data5/FJ/RQ/MY-8385427/dj-party.jpg' },
-    { id: '5', title: 'Fire Show', date: 'Dec 23', image: 'https://5.imimg.com/data5/FJ/RQ/MY-8385427/dj-party.jpg' },
-    { id: '6', title: 'Fire Show', date: 'Dec 23', image: 'https://5.imimg.com/data5/FJ/RQ/MY-8385427/dj-party.jpg' },
-    { id: '7', title: 'Fire Show', date: 'Dec 23', image: 'https://5.imimg.com/data5/FJ/RQ/MY-8385427/dj-party.jpg' },
+    { id: '2', title: 'Rap Show', date: 'Dec 22', image: 'http://eventspick.com/storage/events/1722023528_66a3fe68a5e6c.jpeg' },
+    { id: '3', title: 'Bubble Show', date: 'Dec 24', image: 'https://cdns-images.dzcdn.net/images/cover/8764171cd436e4d1063dd76e7aad7895/1900x1900-000000-80-0-0.jpg' },
+    { id: '4', title: 'Fire Show', date: 'Dec 28', image: 'https://cdns-images.dzcdn.net/images/cover/5b792573f2789ce67c14bfd9cc3b9926/1900x1900-000000-80-0-0.jpg' },
     // Add more events here
   ];
 
-  const renderEventItem = ({ item, index }: { item: any, index: number }) => {
-    const inputRange = [
-      (index - 1) * viewportWidth * 0.8,
-      index * viewportWidth * 0.8,
-      (index + 1) * viewportWidth * 0.8,
-    ];
-
-    const scale = scrollX.interpolate({
-      inputRange,
-      outputRange: [0.8, 1, 0.8],
-      extrapolate: 'clamp',
-    });
-
+  const renderEventItem = ({ item, index }) => {
     return (
-      <Animated.View style={[styles.eventCard, { transform: [{ scale }] }]}>
+      <View style={styles.eventCard}>
         <Image source={{ uri: item.image }} style={styles.eventImage} />
-        <View style={styles.textContainer}>
+        <View style={styles.overlay}>
           <Text style={styles.eventDate}>{item.date}</Text>
           <Text style={styles.eventTitle}>{item.title}</Text>
         </View>
-      </Animated.View>
+      </View>
     );
   };
 
@@ -52,7 +37,7 @@ export default function HomeScreen() {
       </View>
 
       <Text style={styles.sectionTitle}>FEATURED</Text>
-      <Animated.FlatList
+      <FlatList
         horizontal
         data={featuredEvents}
         renderItem={renderEventItem}
@@ -61,11 +46,6 @@ export default function HomeScreen() {
         contentContainerStyle={styles.featuredList}
         snapToInterval={viewportWidth * 0.8}
         decelerationRate="fast"
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-          { useNativeDriver: true }
-        )}
-        scrollEventThrottle={16}
       />
 
       <Text style={styles.sectionTitle}>FOR YOU</Text>
@@ -126,23 +106,28 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
+    height: 180, // Reduced height for all cards
   },
   eventImage: {
     width: '100%',
-    height: 200,
-  },
-  textContainer: {
+    height: '100%', // Adjusted height to cover entire card
     position: 'absolute',
-    bottom: 10,
-    left: 10,
+    top: 0,
+    left: 0,
+  },
+  overlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent overlay for better text visibility
+    alignItems: 'center',
   },
   eventDate: {
-    backgroundColor: '#fff',
-    color: '#000',
-    padding: 5,
-    borderRadius: 5,
-    fontSize: 12,
-    marginBottom: 5,
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   eventTitle: {
     color: '#fff',
