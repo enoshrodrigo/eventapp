@@ -1,8 +1,19 @@
-import React from 'react';
-import { StyleSheet, View, Image, Text } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Ensure you have expo/vector-icons installed
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Image, Text, Appearance } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 const RecommendationCard = ({ event }) => {
+  const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
+
+  useEffect(() => {
+    const subscription = Appearance.addChangeListener(({ colorScheme }) => {
+      setColorScheme(colorScheme);
+    });
+    return () => subscription.remove();
+  }, []);
+
+  const styles = colorScheme === 'dark' ? darkStyles : lightStyles;
+
   return (
     <View style={styles.card}>
       <Image source={{ uri: event.image }} style={styles.image} />
@@ -10,7 +21,7 @@ const RecommendationCard = ({ event }) => {
         <Text style={styles.title} numberOfLines={2}>{event.title}</Text>
         <View style={styles.detailsContainer}>
           <View style={styles.locationContainer}>
-            <Ionicons name="location-sharp" size={14} color="#aaa" />
+            <Ionicons name="location-sharp" size={14} color={styles.iconColor.color} />
             <Text style={styles.location}>{event.location}</Text>
           </View>
           <View style={styles.priceContainer}>
@@ -22,16 +33,15 @@ const RecommendationCard = ({ event }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const commonStyles = {
   card: {
     flexDirection: 'row',
-    backgroundColor: '#333',
     borderRadius: 10,
     overflow: 'hidden',
     marginVertical: 10,
     padding: 10,
     alignItems: 'center',
-    height: 100, // Ensure cards have consistent height
+    height: 100,
   },
   image: {
     width: 80,
@@ -41,21 +51,42 @@ const styles = StyleSheet.create({
   infoContainer: {
     marginLeft: 10,
     flex: 1,
-    justifyContent: 'space-between', // Distribute space evenly
+    justifyContent: 'space-between',
   },
   title: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#fff',
   },
   detailsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end', // Align items to the bottom
+    alignItems: 'flex-end',
   },
   locationContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  priceContainer: {
+    borderRadius: 5,
+    paddingVertical: 2,
+    paddingHorizontal: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  price: {
+    fontSize: 14,
+  },
+};
+
+const darkStyles = StyleSheet.create({
+  ...commonStyles,
+  card: {
+    ...commonStyles.card,
+    backgroundColor: '#333',
+  },
+  title: {
+    ...commonStyles.title,
+    color: '#fff',
   },
   location: {
     fontSize: 14,
@@ -63,16 +94,45 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   priceContainer: {
+    ...commonStyles.priceContainer,
     backgroundColor: '#ff3b30',
-    borderRadius: 5,
-    paddingVertical: 2,
-    paddingHorizontal: 8, // Adjust horizontal padding to ensure consistent size
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   price: {
-    fontSize: 14,
+    ...commonStyles.price,
     color: '#fff',
+  },
+  iconColor: {
+    color: '#aaa',
+  },
+});
+
+const lightStyles = StyleSheet.create({
+  ...commonStyles,
+  card: {
+    ...commonStyles.card,
+    backgroundColor: '#fff',
+    borderColor: '#ccc',
+    borderWidth: 1,
+  },
+  title: {
+    ...commonStyles.title,
+    color: '#000',
+  },
+  location: {
+    fontSize: 14,
+    color: '#555',
+    marginLeft: 5,
+  },
+  priceContainer: {
+    ...commonStyles.priceContainer,
+    backgroundColor: '#ff3b30',
+  },
+  price: {
+    ...commonStyles.price,
+    color: '#fff',
+  },
+  iconColor: {
+    color: '#555',
   },
 });
 

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, ScrollView, FlatList, Image, Text, View, TextInput, Dimensions, Animated } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, ScrollView, FlatList, Image, Text, View, TextInput, Dimensions, Animated, Appearance } from 'react-native';
 import EventCard from '../components/EventCard';
 import RecommendationCard from '../components/RecommendationCard'; // Import the new component
 
@@ -7,6 +7,14 @@ const { width: viewportWidth } = Dimensions.get('window');
 
 function HomeScreen() {
   const [scrollX] = useState(new Animated.Value(0));
+  const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
+
+  useEffect(() => {
+    const subscription = Appearance.addChangeListener(({ colorScheme }) => {
+      setColorScheme(colorScheme);
+    });
+    return () => subscription.remove();
+  }, []);
 
   const featuredEvents = [
     { id: '1', title: 'The Weekend', date: 'Dec 21', image: 'https://static.vecteezy.com/system/resources/previews/029/332/148/non_2x/ai-generative-dj-playing-and-mixing-music-in-nightclub-party-at-night-edm-dance-music-club-with-crowd-of-young-people-free-photo.jpg' },
@@ -95,6 +103,8 @@ function HomeScreen() {
     );
   };
 
+  const styles = colorScheme === 'dark' ? darkStyles : lightStyles;
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -116,29 +126,23 @@ function HomeScreen() {
         snapToInterval={viewportWidth * 0.8}
         decelerationRate="fast"
       />
- <Text style={styles.sectionTitle}>RECOMMENDED FOR YOU</Text>
+      <Text style={styles.sectionTitle}>RECOMMENDED FOR YOU</Text>
       <View>
         {recommendedEvents.map(event => (
           <RecommendationCard key={event.id} event={event} />
         ))}
       </View>
       <Text style={styles.sectionTitle}>FOR YOU</Text>
-     {/*  <View style={styles.promoCard}>
-        <Text style={styles.promoText}>Claim 1 free ticket!</Text>
-        <Text style={styles.promoSubText}>Share an event with friends and get 1 ticket.</Text>
-      </View> */}
       <View style={styles.eventsGrid}>
         {eventsForYou.map(event => (
           <EventCard key={event.id} event={event} />
         ))}
       </View>
-
-     
     </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
+const darkStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000',
@@ -215,23 +219,89 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-  promoCard: {
-    backgroundColor: '#444',
-    borderRadius: 10,
-    padding: 20,
-    alignItems: 'center',
-    marginVertical: 10,
+  eventsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
-  promoText: {
-    color: '#fff',
-    fontSize: 18,
+});
+
+const lightStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    padding: 16,
+  },
+  header: {
+    marginBottom: 20,
+  },
+  date: {
+    color: '#333',
+    fontSize: 12,
+  },
+  title: {
+    color: '#000',
+    fontSize: 28,
     fontWeight: 'bold',
   },
-  promoSubText: {
-    color: '#aaa',
-    fontSize: 14,
-    textAlign: 'center',
+  searchContainer: {
     marginTop: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ccc',
+    borderRadius: 10,
+    padding: 5,
+  },
+  searchInput: {
+    color: '#000',
+    fontSize: 16,
+    padding: 10,
+    flex: 1,
+  },
+  sectionTitle: {
+    color: '#000',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginVertical: 10,
+  },
+  featuredList: {
+    paddingVertical: 10,
+  },
+  eventCard: {
+    width: viewportWidth * 0.8,
+    marginRight: 10,
+    backgroundColor: '#eee',
+    borderRadius: 10,
+    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 180, // Reduced height for all cards
+  },
+  eventImage: {
+    width: '100%',
+    height: '100%', // Adjusted height to cover entire card
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
+  overlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)', // Semi-transparent overlay for better text visibility
+    alignItems: 'center',
+  },
+  eventDate: {
+    color: '#000',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  eventTitle: {
+    color: '#000',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   eventsGrid: {
     flexDirection: 'row',
