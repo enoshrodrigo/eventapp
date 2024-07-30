@@ -1,9 +1,10 @@
+// app/components/EventCard.tsx
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Image, Text, View, TouchableOpacity, Dimensions, Appearance } from 'react-native';
 
 const { width: viewportWidth } = Dimensions.get('window');
 
-const EventCard = ({ event }) => {
+const EventCard = ({ event, onPress }: { event: any; onPress: () => void }) => {
   const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
 
   useEffect(() => {
@@ -16,7 +17,7 @@ const EventCard = ({ event }) => {
   const styles = colorScheme === 'dark' ? darkStyles : lightStyles;
 
   return (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={onPress}>
       <Image source={{ uri: event.image }} style={styles.image} />
       <View style={styles.infoContainer}>
         <Text style={styles.date}>{event.date}</Text>
@@ -28,7 +29,7 @@ const EventCard = ({ event }) => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -38,7 +39,7 @@ const commonStyles = {
     overflow: 'hidden',
     marginBottom: 10,
     width: viewportWidth * 0.45,
-    borderWidth: 1, // Add border width to all cards for separation
+    borderWidth: 1,
   },
   image: {
     width: '100%',

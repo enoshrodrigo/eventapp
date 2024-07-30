@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, ScrollView, FlatList, Image, Text, View, TextInput, Dimensions, Animated, Appearance } from 'react-native';
 import EventCard from '../components/EventCard';
 import RecommendationCard from '../components/RecommendationCard'; // Import the new component
+import { useNavigation } from 'expo-router';
 
 const { width: viewportWidth } = Dimensions.get('window');
 
-function HomeScreen() {
+const HomeScreen = () => {
+  const navigation = useNavigation();
   const [scrollX] = useState(new Animated.Value(0));
   const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
 
@@ -134,9 +136,13 @@ function HomeScreen() {
       </View>
       <Text style={styles.sectionTitle}>FOR YOU</Text>
       <View style={styles.eventsGrid}>
-        {eventsForYou.map(event => (
-          <EventCard key={event.id} event={event} />
-        ))}
+      {eventsForYou.map(event => (
+        <EventCard
+          key={event.id}
+          event={event}
+          onPress={() => navigation.navigate('EventDetailsScreen', { event })}
+        />
+      ))}
       </View>
     </ScrollView>
   );
