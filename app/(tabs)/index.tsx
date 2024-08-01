@@ -32,34 +32,60 @@ const HomeScreen = () => {
       title: 'Electric Love Festival',
       date: '2024-09-25',
       image: 'https://www.electriclove.at/en/wp-content/uploads/sites/2/2023/04/Electric-Love-Festival-2023-1-scaled.jpg',
-      description: 'Intents Festival is one of the largest and most advanced dance festivals in the Netherlands...',
+      description: 'Electric Love Festival is an electronic dance music festival in Austria, attracting fans from all over the world with top DJs and incredible atmosphere.',
+      category: 'Electronic, Dance',
+      price: 'From €99',
+      address: 'Salzburgring, Austria',
+      location: {
+        lat: 47.8229,
+        lng: 13.1681
+      }
     },
     {
       id: '2',
       title: 'Intents Festival',
       date: '2024-09-25',
       image: 'https://i1.sndcdn.com/artworks-UqSwVWjGt0LORK5C-eauH8w-t500x500.jpg',
-      description: 'Intents Festival is one of the largest and most advanced dance festivals in the Netherlands...',
+      description: 'Intents Festival is one of the largest and most advanced dance festivals in the Netherlands, offering an unforgettable experience with the best DJs.',
+      category: 'Electronic, Hardstyle',
+      price: 'From €75',
+      address: 'Oisterwijk, Netherlands',
+      location: {
+        lat: 51.5744,
+        lng: 5.1935
+      }
     },
     {
       id: '3',
       title: 'Tomorrowland',
       date: '2024-09-25',
       image: 'https://prismic-assets-cdn.tomorrowland.com/ZjDuAN3JpQ5PTRRp_PORTRAIT-3-.png',
-      description: 'Intents Festival is one of the largest and most advanced dance festivals in the Netherlands...',
+      description: 'Tomorrowland is a world-renowned music festival in Belgium, known for its extraordinary production, top-tier lineup, and vibrant atmosphere.',
+      category: 'Electronic, Dance',
+      price: 'From €150',
+      address: 'Boom, Belgium',
+      location: {
+        lat: 51.0912,
+        lng: 4.3668
+      }
     },
     {
       id: '4',
       title: 'Ultra Music Festival',
       date: '2024-09-25',
       image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgHsEntVrcHIB2HogseC7k9Xz0llegOPgqsQ&s',
-      description: 'Intents Festival is one of the largest and most advanced dance festivals in the Netherlands...',
+      description: 'Ultra Music Festival is a premier electronic music festival held in Miami, known for its spectacular performances and state-of-the-art production.',
+      category: 'Electronic, EDM',
+      price: 'From $299',
+      address: 'Miami, USA',
+      location: {
+        lat: 25.7617,
+        lng: -80.1918
+      }
     },
-    
-
     // Add more events here
   ];
-
+  
   const recommendedEvents = [
    
     {
