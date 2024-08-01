@@ -63,13 +63,12 @@ const EventDetailsScreen = () => {
               <Text style={styles.priceType}>{price.type}</Text>
               <Text style={styles.priceValue}>{price.price} / Person</Text>
               {price.points.map((point, idx) => (
-                <View key={idx} style={styles.pointRow}>
-                  {point ? <Ionicons name="ellipse" size={10} color="#ffd700" />
-                     
-                    
-                  : <Text style={styles.pricePoint}>-
-                    </Text>}
-                </View>
+                point ? (
+                  <View key={idx} style={styles.pointRow}>
+                    <Ionicons name="ellipse" size={10} style={styles.iconStyle} />
+                    <Text style={styles.pricePoint}>{point}</Text>
+                  </View>
+                ) : null
               ))}
               <View style={styles.buttonContainer}>
                 {price.soldOut ? (
@@ -101,7 +100,6 @@ const commonStyles = {
     height: 250,
   },
   headerOverlay: {
-   // position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
@@ -215,6 +213,9 @@ const commonStyles = {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#333',
+  },
+  iconStyle: {
+    color: '#ffd700',
   },
 };
 
