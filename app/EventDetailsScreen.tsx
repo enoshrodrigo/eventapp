@@ -3,6 +3,7 @@ import { StyleSheet, View, Image, Text, ScrollView, Appearance, TouchableOpacity
 import { useRoute } from '@react-navigation/native';
 import MapView, { Marker } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
+import { BounceOutDown } from 'react-native-reanimated';
 
 const EventDetailsScreen = () => {
   const route = useRoute();
@@ -99,6 +100,7 @@ const commonStyles = {
   container: {
     flex: 1,
     backgroundColor: '#f8f8f8',
+
   },
   headerContainer: {
     position: 'relative',
@@ -108,7 +110,7 @@ const commonStyles = {
     height: 250,
   },
   headerOverlay: {
-    position: 'absolute',
+   // position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
@@ -163,6 +165,7 @@ const commonStyles = {
   map: {
     width: '100%',
     height: 150,
+    borderRadius: 10,
   },
   swipeText: {
     fontSize: 16,
