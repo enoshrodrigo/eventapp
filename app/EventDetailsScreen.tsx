@@ -26,7 +26,11 @@ const EventDetailsScreen = () => {
   ];
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ flexGrow: 1 }}
+      showsVerticalScrollIndicator={false}
+    >
       <View style={styles.headerContainer}>
         <Image source={{ uri: event.image }} style={styles.mainImage} />
         <View style={styles.headerOverlay}>
@@ -59,26 +63,30 @@ const EventDetailsScreen = () => {
         <Text style={styles.swipeText}>Swipe to view the Prices</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.priceScrollContainer}>
           {prices.map((price, index) => (
-            <View key={index} style={styles.priceCard}>
-              <Text style={styles.priceType}>{price.type}</Text>
-              <Text style={styles.priceValue}>{price.price} / Person</Text>
-              {price.points.map((point, idx) => (
-                point ? (
-                  <View key={idx} style={styles.pointRow}>
-                    <Ionicons name="ellipse" size={10} style={styles.iconStyle} />
-                    <Text style={styles.pricePoint}>{point}</Text>
-                  </View>
-                ) : null
-              ))}
-              <View style={styles.buttonContainer}>
-                {price.soldOut ? (
-                  <Image source={{ uri: 'https://grab-tickets.com/frontend/images/sold-out.png' }} style={styles.soldOutImage} />
-                ) : (
-                  <TouchableOpacity style={styles.button} onPress={() => alert('Ticket Purchased!')}>
-                    <Text style={styles.buttonText}>Get Ticket</Text>
-                  </TouchableOpacity>
-                )}
+            <View key={index} style={styles.ticketContainer}>
+              <View style={styles.notch} />
+              <View style={styles.ticketContent}>
+                <Text style={styles.priceType}>{price.type}</Text>
+                <Text style={styles.priceValue}>{price.price} / Person</Text>
+                {price.points.map((point, idx) => (
+                  point ? (
+                    <View key={idx} style={styles.pointRow}>
+                      <Ionicons name="ellipse" size={10} style={styles.iconStyle} />
+                      <Text style={styles.pricePoint}>{point}</Text>
+                    </View>
+                  ) : null
+                ))}
+                <View style={styles.buttonContainer}>
+                  {price.soldOut ? (
+                    <Image source={{ uri: 'https://grab-tickets.com/frontend/images/sold-out.png' }} style={styles.soldOutImage} />
+                  ) : (
+                    <TouchableOpacity style={styles.button} onPress={() => alert('Ticket Purchased!')}>
+                      <Text style={styles.buttonText}>Get Ticket</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
               </View>
+              <View style={styles.notch} />
             </View>
           ))}
         </ScrollView>
@@ -100,6 +108,7 @@ const commonStyles = {
     height: 250,
   },
   headerOverlay: {
+    position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
@@ -163,12 +172,31 @@ const commonStyles = {
   priceScrollContainer: {
     paddingBottom: 20,
   },
-  priceCard: {
-    backgroundColor: '#333',
+  ticketContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 10,
+  },
+  notch: {
+    width: 10,
+    height: '100%',
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+    borderWidth: 0,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    overflow: 'hidden',
+  },
+  ticketContent: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#333',
+    borderStyle: 'dashed',
     padding: 15,
     borderRadius: 10,
-    marginRight: 10,
-    width: 200,
+    width: 180,
     alignItems: 'center',
     justifyContent: 'space-between',
     height: 300,
@@ -176,12 +204,12 @@ const commonStyles = {
   priceType: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#ffd700',
+    color: '#333',
     marginBottom: 5,
   },
   priceValue: {
     fontSize: 16,
-    color: '#ffd700',
+    color: '#333',
     marginBottom: 10,
   },
   pointRow: {
@@ -191,7 +219,7 @@ const commonStyles = {
   },
   pricePoint: {
     fontSize: 14,
-    color: '#ffd700',
+    color: '#333',
     marginLeft: 5,
   },
   soldOutImage: {
@@ -204,7 +232,7 @@ const commonStyles = {
     marginTop: 'auto',
   },
   button: {
-    backgroundColor: '#ffd700',
+    backgroundColor: '#333',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
@@ -212,10 +240,10 @@ const commonStyles = {
   buttonText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#fff',
   },
   iconStyle: {
-    color: '#ffd700',
+    color: '#333',
   },
 };
 
@@ -245,20 +273,33 @@ const darkStyles = StyleSheet.create({
     ...commonStyles.address,
     color: '#ddd',
   },
-  priceCard: {
-    ...commonStyles.priceCard,
-    backgroundColor: '#2c2c2c',
+  ticketContent: {
+    ...commonStyles.ticketContent,
+    backgroundColor: '#333',
+    borderColor: '#ffd700',
   },
   priceType: {
     ...commonStyles.priceType,
-    color: '#ffd700',
+    color: '#fff',
   },
   priceValue: {
     ...commonStyles.priceValue,
-    color: '#ffd700',
+    color: '#fff',
   },
   pricePoint: {
     ...commonStyles.pricePoint,
+    color: '#fff',
+  },
+  button: {
+    ...commonStyles.button,
+    backgroundColor: '#ffd700',
+  },
+  buttonText: {
+    ...commonStyles.buttonText,
+    color: '#333',
+  },
+  iconStyle: {
+    ...commonStyles.iconStyle,
     color: '#ffd700',
   },
 });
@@ -289,21 +330,35 @@ const lightStyles = StyleSheet.create({
     ...commonStyles.address,
     color: '#333',
   },
-  priceCard: {
-    ...commonStyles.priceCard,
+  ticketContent: {
+    ...commonStyles.ticketContent,
     backgroundColor: '#f0f0f0',
+    borderColor: '#333',
+     borderWidth: 1.5,
   },
   priceType: {
     ...commonStyles.priceType,
-    color: '#ffd700',
+    color: '#333',
   },
   priceValue: {
     ...commonStyles.priceValue,
-    color: '#ffd700',
+    color: '#333',
   },
   pricePoint: {
     ...commonStyles.pricePoint,
-    color: '#ffd700',
+    color: '#333',
+  },
+  button: {
+    ...commonStyles.button,
+    backgroundColor: '#333',
+  },
+  buttonText: {
+    ...commonStyles.buttonText,
+    color: '#fff',
+  },
+  iconStyle: {
+    ...commonStyles.iconStyle,
+    color: '#333',
   },
 });
 
