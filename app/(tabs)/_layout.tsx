@@ -48,6 +48,14 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="scanQR"
+        options={{
+          title: 'Scan ME',
+          tabBarIcon: ({ color }) => <TabBarIcon name ="deviantart" color={color} />,
+        }}
+      />
+
+<Tabs.Screen
         name="two"
         options={{
           title: 'Offers',
@@ -55,5 +63,7 @@ export default function TabLayout() {
         }}
       />
     </Tabs>
+
+    
   );
 }
