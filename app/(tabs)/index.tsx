@@ -3,14 +3,15 @@ import { StyleSheet, ScrollView, FlatList, Image, Text, View, TextInput, Dimensi
 import EventCard from '../components/EventCard';
 import RecommendationCard from '../components/RecommendationCard'; // Import the new component
 import { useNavigation } from 'expo-router';
-
+import axios from 'axios'; // Add this line to import axios
 const { width: viewportWidth } = Dimensions.get('window');
 
 const HomeScreen = () => {
   const navigation = useNavigation();
   const [scrollX] = useState(new Animated.Value(0));
   const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
-
+  const [recommendedEvents, setRecommendedEvents] = useState([]);
+  const [featuredEvents, setFeaturedEvents] = useState([]);
   useEffect(() => {
     const subscription = Appearance.addChangeListener(({ colorScheme }) => {
       setColorScheme(colorScheme);
@@ -18,13 +19,26 @@ const HomeScreen = () => {
     return () => subscription.remove();
   }, []);
 
-  const featuredEvents = [
+  useEffect(() => {
+    axios.get('http://192.168.1.7:8000/events/recommended')  
+      .then(response => {
+        console.log('Recommended events:', response.data);
+        setRecommendedEvents(response.data);
+        setFeaturedEvents(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, []);
+  
+
+/*   const featuredEvents = [
     { id: '1', title: 'The Weekend', date: 'Dec 21', image: 'https://static.vecteezy.com/system/resources/previews/029/332/148/non_2x/ai-generative-dj-playing-and-mixing-music-in-nightclub-party-at-night-edm-dance-music-club-with-crowd-of-young-people-free-photo.jpg' },
     { id: '2', title: 'Rap Show', date: 'Dec 22', image: 'http://eventspick.com/storage/events/1722023528_66a3fe68a5e6c.jpeg' },
     { id: '3', title: 'Bubble Show', date: 'Dec 24', image: 'https://cdns-images.dzcdn.net/images/cover/8764171cd436e4d1063dd76e7aad7895/1900x1900-000000-80-0-0.jpg' },
     { id: '4', title: 'Fire Show', date: 'Dec 28', image: 'https://cdns-images.dzcdn.net/images/cover/5b792573f2789ce67c14bfd9cc3b9926/1900x1900-000000-80-0-0.jpg' },
     // Add more events here
-  ];
+  ]; */
 
   const eventsForYou = [
     {
@@ -86,7 +100,7 @@ const HomeScreen = () => {
     // Add more events here
   ];
   
-  const recommendedEvents = [
+ /*  const recommendedEvents = [
    
     {
       id: '1',
@@ -118,11 +132,11 @@ const HomeScreen = () => {
     },
     // Add more events here
   ];
-
+ */
   const renderEventItem = ({ item }) => {
     return (
       <View style={styles.eventCard}>
-        <Image source={{ uri: item.image }} style={styles.eventImage} />
+        <Image source={{ uri:  `http://eventspick.com/storage/events/${item.image}`}} style={styles.eventImage} />
         <View style={styles.overlay}>
           <Text style={styles.eventDate}>{item.date}</Text>
           <Text style={styles.eventTitle}>{item.title}</Text>

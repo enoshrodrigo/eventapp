@@ -16,16 +16,20 @@ const RecommendationCard = ({ event }) => {
 
   return (
     <View style={styles.card}>
-      <Image source={{ uri: event.image }} style={styles.image} />
+      <Image source={{ uri: `http://eventspick.com/storage/events/${event.image}` }} style={styles.image} />
       <View style={styles.infoContainer}>
         <Text style={styles.title} numberOfLines={2}>{event.title}</Text>
         <View style={styles.detailsContainer}>
           <View style={styles.locationContainer}>
             <Ionicons name="location-sharp" size={14} color={styles.iconColor.color} />
-            <Text style={styles.location}>{event.location}</Text>
+            <Text style={styles.location} numberOfLines={2}>{event?.venue 
+              
+              ? event.venue 
+              : 'Location not available'
+              }</Text>
           </View>
           <View style={styles.priceContainer}>
-            <Text style={styles.price}>{event.price}</Text>
+            <Text style={styles.price} >Rs.{event.price}</Text>
           </View>
         </View>
       </View>
@@ -64,7 +68,10 @@ const commonStyles = {
   },
   locationContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center', 
+    width: '50%',
+   
+    
   },
   priceContainer: {
     borderRadius: 5,
@@ -72,9 +79,11 @@ const commonStyles = {
     paddingHorizontal: 8,
     justifyContent: 'center',
     alignItems: 'center',
+
   },
   price: {
     fontSize: 14,
+ 
   },
 };
 
